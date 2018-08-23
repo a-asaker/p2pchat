@@ -20,16 +20,3 @@
    
     2- The Same As Locally Method .
               
- #  For Windows Useres :
- To Work Properly :
-          
-          (1) ==> Delete The First Line From Client.py,Server.py Files "#!/usr/bin/env pythhon3"
-          (2) ==> Replace [|=> os.kill(os.getpid(), signal.SIGKILL) <=|] In The Client File with ==> [|=> killProcess(os.getpid()) <=|] .
-          (3) ==> Add The Code Below To The Beginning Of The Project .
-          
-          
-   The Code :
-   
-    import subprocess as s
-    def killProcess(pid):
-        s.Popen('taskkill /F /PID {0}'.format(pid), shell=True)
