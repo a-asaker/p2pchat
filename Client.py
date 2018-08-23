@@ -3,17 +3,15 @@
 
 import socket
 import threading
-from multiprocessing import Process
 import time
 import sys
 import os
-import signal
 
 def send(s):
 	message=input(" >>> (YOU) : ")
 	message_size=str(len(message))
 	s.send(bytes(message_size,"UTF-8"))
-	time.sleep(.5)
+	time.sleep(.3)
 	s.send(bytes(message,"UTF-8"))
 	if(message.lower()=='close'):
 	    s.close()
@@ -30,13 +28,13 @@ def recieve(s):
 			time.sleep(.5)
 			s.send(bytes("close","UTF-8"))
 			s.close()
-			print("\n [*] Server Has Closed The Connection With You !\n \t Bye !",end=" ")
-			os.kill(os.getpid(), signal.SIGKILL)
+			print("\n [*] Server Has Closed The Connection With You !\n \t Bye !")
+			os._exit(0)
 		elif(data=="KILL ME"):
 			s.close()
 			print("")
-			print(" [*] Server Is Down Now !\n \t Bye !",end=" ")
-			os.kill(os.getpid(), signal.SIGKILL)
+			print(" [*] Server Is Down Now !\n \t Bye !")
+			os._exit(0)
 		else:
 			print("",end="\r")
 			print(' << Server >> : ',data ,end="\n >>> (YOU) : ")
@@ -51,16 +49,7 @@ def main():
 	thread.start()
 	while send(s):
 		pass
+	sys.exit("Bue3")
 	return
 if __name__=="__main__":
 	main()
-
-''' 
-IF U USE WINDOWS :
-(1) ==> Replace [ os.kill(os.getpid(), signal.SIGKILL) ] In The Code with ==> [ killProcess(os.getpid()) ].
-(2) ==> Add The Code Below To The Beginning Of The Project .
-
-import subprocess as s
-def killProcess(pid):
-    s.Popen('taskkill /F /PID {0}'.format(pid), shell=True)
-'''
