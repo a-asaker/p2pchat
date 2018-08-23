@@ -3,11 +3,11 @@
 
 import socket
 import threading
-from multiprocessing import Process
 import time
 import sys
 
 s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 host='0.0.0.0'
 port=1122
 s.bind((host,port))
@@ -19,7 +19,7 @@ def send(s,conn):
     message=input(" >>> (YOU) : ")
     message_size=str(len(message))
     conn.send(bytes(message_size,"UTF-8"))
-    time.sleep(.5)
+    time.sleep(.3)
     conn.send(bytes(message,"UTF-8"))
     if(message.lower()=='close'):
       time.sleep(1)
