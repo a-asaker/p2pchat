@@ -17,7 +17,7 @@ def send(s):
 	if(message.lower()=='close'):
 		s.close()
 		sys.exit("\n \t Bye !")
-	    return False
+		return False
 	return True
 
 def recieve(s):
