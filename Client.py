@@ -6,6 +6,7 @@ import threading
 import time
 import sys
 import os
+import signal
 
 def send(s):
 	message=input(" >>> (YOU) : ")
@@ -14,8 +15,8 @@ def send(s):
 	time.sleep(.3)
 	s.send(bytes(message,"UTF-8"))
 	if(message.lower()=='close'):
-	    s.close()
-	    sys.exit("\n \t Bye !")
+		s.close()
+		sys.exit("\n \t Bye !")
 	    return False
 	return True
 
@@ -38,10 +39,16 @@ def recieve(s):
 		else:
 			print("",end="\r")
 			print(' << Server >> : ',data ,end="\n >>> (YOU) : ")
+			
+def ctrlc_handler(signum,frm):
+	print("\n If You Want To Close, Type : CLOSE \n >> ", end='')
+
+
 def main():
 	s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 	host=''
 	port=1122
+	signal.signal(signal.SIGINT, ctrlc_handler)
 	s.connect((host,port))
 	print("\n [*] Connected To {} Via Port {} \n".format(host, port))
 	thread = threading.Thread(target=recieve, args=(s,))
