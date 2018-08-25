@@ -5,6 +5,7 @@ import socket
 import threading
 import time
 import sys
+import signal
 
 s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -54,11 +55,15 @@ def recieve(s,conn,ip):
       print("",end="\r")
       print(" << {} >> : ".format(ip),data,end="\n >>> (YOU) : ")
 
+def ctrlc_handler(signum,frm):
+  print("\n If You Want To Close, Type : KILL ME \n >> ", end='')
+      
 def main():
   print(" [*] Listening . . .", end="\n ")
   # print(" ",end=" ")
   s.listen(1)
   conn,addr=s.accept()
+  signal.signal(signal.SIGINT, ctrlc_handler)
   ip=addr[0]
   print("[*] ",ip," Connected!")
   thread = threading.Thread(target=recieve, args=(s,conn,ip,))
